@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Unlock Simulator</title>
+    <style>
+        .guitar {
+            position: relative;
+            width: 1300px;
+            height: 600px;
+            background-image: url('fingerboard.jpg');  
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .string {
+            height: 4px;
+            background-color: gray;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .fret {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background-color: gray;
+            z-index: 1;
+        }
+
+        .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>GUITAR Simulator</h2>
+<div id="guitar" class="guitar">
+    <div class="string" data-note="E"></div>
+    <div class="string" data-note="A"></div>
+    <div class="string" data-note="D"></div>
+    <div class="string" data-note="G"></div>
+    <div class="string" data-note="B"></div>
+    <div class="string" data-note="E"></div>
+
+    <!-- Represent frets for visual aid -->
+    <div class="fret" style="left:25%;"></div>
+    <div class="fret" style="left:50%;"></div>
+    <div class="fret" style="left:75%;"></div>
+
+    <!-- Represent dots for visual aid -->
+    <div class="dot" style="left:25%; top:50%;"></div>
+    <div class="dot" style="left:50%; top:25%;"></div>
+    <div class="dot" style="left:50%; top:75%;"></div>
+    <div class="dot" style="left:75%; top:50%;"></div>
+</div>
+
+<h2>Input Chord:</h2>
+<p id="inputChord"></p>
+
+<script>
+    const guitar = document.getElementById('guitar');
+    const inputChord = document.getElementById('inputChord');
+    const correctChord = 'E';  // Correct unlocking chords
+
+    guitar.addEventListener('touchstart', function(event) {
+        const touchedStrings = [];
+        for (let i = 0; i < event.touches.length; i++) {
+            const touch = event.touches[i];
+            const string = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (string && string.classList.contains('string')) {
+                touchedStrings.push(string.getAttribute('data-note'));
+            }
+        }
+
+        const chord = identifyChord(touchedStrings);
+        inputChord.textContent = chord;
+
+        if (chord === correctChord) {
+            alert('Unlocked successfully！');
+        } else {
+            alert('Unlock failed！');
+        }
+    });
+
+    function identifyChord(touchedStrings) {
+        //expand for more chords
+        if (arraysEqual(touchedStrings, ['E', 'A', 'D', 'G', 'B', 'E'])) {
+            return 'E';
+        }
+        // Add more chord identifications if we need
+        return 'Unknown';
+    }
+
+    function arraysEqual(a, b) {
+        if (a === b) return true;
+        if (a == null || b == null) return false;
+        if (a.length !== b.length) return false;
+
+        a.sort();
+        b.sort();
+
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+</script>
+</body>
+
+</html>
