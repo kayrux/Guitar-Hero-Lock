@@ -1,4 +1,7 @@
 /* global styles */
+:root {
+  --button-diameter: 150px;
+}
 
 .background {
   position: fixed;
@@ -11,33 +14,58 @@
   z-index: -998;
 }
 
-.guitar {
+#guitar-background {
   width: 100%;
   max-width: 1000px;
   height: 100vh;
   margin: auto;
 }
 
-.falling-button {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  transition: 5s translate;
-  transform: translateY(-50%);
-  /* border: 1px solid white;
-  animation: linear 1;
-  animation-duration: var(5s);
-  animation-name: fall; */
+#start-button {
+  height: 50px;
+  width: 5rem;
+  align-self: center;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 }
 
-#fall-area {
+.falling-button {
+  width: var(--button-diameter);
+  height: var(--button-diameter);
+  border-radius: 50%;
+  border: 1px solid white;
+  position: absolute;
+  top: calc(var(--button-diameter) * -1);
+  animation: fall 3s linear 1;
+}
+
+#fall-area-container {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-around;
 }
 
+.fall-lane {
+  width: var(--button-diameter);
+  height: 100%;
+  /* border: 1px solid white; */
+}
+
 @keyframes fall {
+  0% {
+    top: calc(var(--button-diameter) * -1);
+    opacity: 0.1;
+  }
+  100% {
+    top: calc(100%);
+    opacity: 1;
+  }
+}
+
+/* @keyframes fall {
   0% {
     transform: translateY(0%);
     opacity: 0.1;
@@ -47,7 +75,7 @@
     transform: translateY(100%);
     opacity: 1;
   }
-}
+} */
 
 /* @keyframes fall {
   0% {
