@@ -1,9 +1,29 @@
 <!Doctype HTML>
 <html>
-  <head>
-    
-  </head>
-  <body>
-    Hi
-  </body>
+
+<head>
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+  <div class="background">
+    <div id="guitar-background">
+      <!-- <button id="start-button" onclick="start()">Start</button> -->
+
+      <div id="fall-area-container">
+        <div class="fall-lane" id="fall-lane-1"></div>
+        <div class="fall-lane" id="fall-lane-2"></div>
+        <div class="fall-lane" id="fall-lane-3"></div>
+      </div>
+      <div id="fixed-buttons-container">
+        <div id="trigger-1" class="guitar-button" onclick="checkHitAndAnimate(1, this)">Tap to start</div>
+        <div id="trigger-2" class="guitar-button" onclick="checkHitAndAnimate(2, this)">Tap to start</div>
+        <div id="trigger-3" class="guitar-button" onclick="checkHitAndAnimate(3, this)">Tap to start</div>
+      </div>
+
+    </div>
+  </div>
+  <script src="scripts/scripts.js"></script>
+</body>
+
 </html>
