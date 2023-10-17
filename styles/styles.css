@@ -1,6 +1,10 @@
 /* global styles */
 :root {
   --button-diameter: 150px;
+
+  --trigger-1-color: red;
+  --trigger-2-color: blue;
+  --trigger-3-color: green;
 }
 
 .background {
@@ -19,6 +23,8 @@
   max-width: 1000px;
   height: 100vh;
   margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 #start-button {
@@ -39,6 +45,7 @@
   position: absolute;
   top: calc(var(--button-diameter) * -1);
   animation: fall 3s linear 1;
+  z-index: -1;
 }
 
 #fall-area-container {
@@ -46,6 +53,13 @@
   height: 100%;
   display: flex;
   justify-content: space-around;
+}
+
+#fixed-buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15vh;
 }
 
 .fall-lane {
@@ -65,50 +79,126 @@
   }
 }
 
-/* @keyframes fall {
-  0% {
-    transform: translateY(0%);
-    opacity: 0.1;
-  }
+/* ************************************************************************************** */
 
+.guitar-button {
+  width: var(--button-diameter);
+  height: var(--button-diameter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #f9f9f9;
+  cursor: pointer;
+  transition: transform 0.1s, background-color 0.1s;
+}
+
+
+.guitar-button:active {
+  transform: scale(0.95);
+}
+
+.flash-animation {
+  animation: flash 0.5s forwards;
+}
+
+
+.flash-animation {
+  animation: flash 0.5s;
+}
+
+.flash-red {
+  animation: flashRed 0.5s;
+}
+
+.flash-blue {
+  animation: flashBlue 0.5s;
+}
+
+.flash-green {
+  animation: flashGreen 0.5s;
+}
+
+.game-mode-1 {
+  background-color: inherit;
+  border: 2px solid var(--trigger-1-color);;
+}
+
+.game-mode-2 {
+  background-color: inherit;
+  border: 2px solid var(--trigger-2-color);;
+}
+
+.game-mode-3 {
+  background-color: inherit;
+  border: 2px solid var(--trigger-3-color);;
+}
+
+.ready-1 {
+  background-color: var(--trigger-1-color) !important;
+}
+.ready-2 {
+  background-color: var(--trigger-2-color) !important;
+}
+.ready-3 {
+  background-color: var(--trigger-3-color) !important;
+}
+
+.wait-mode {
+  background-color: gray;
+}
+
+@keyframes flashRed {
+  0%  {
+      background-color: grey;
+  }
+  25%  {
+      background-color: rgb(184, 0, 0);
+  }
+  50% {
+      background-color: rgb(184, 32, 32);
+  }
+  75%  {
+      background-color: rgb(184, 64, 64);
+  }
   100% {
-    transform: translateY(100%);
-    opacity: 1;
+      background-color: rgb(184, 96, 96);
   }
-} */
+}
 
-/* @keyframes fall {
-  0% {
-    transform: translateY(var(--yOffset)) scale(0.1);
-    opacity: 0.1;
-  }
-
-  10% {
-    transform: translateY(calc(var(--yOffset) - var(--screenHeight) * 0.1))
-      scale(0.2);
-    opacity: 0.6;
+@keyframes flashBlue {
+  0%  {
+      background-color: rgb(128, 128, 128);
   }
   25% {
-    opacity: 1;
-    transform: translateY(calc(var(--yOffset) - var(--screenHeight) * 0.25))
-      scale(0.3);
+      background-color: rgb(0, 0, 184);
   }
-
   50% {
-    opacity: 0.6;
-    transform: translateY(calc(var(--yOffset) - var(--screenHeight) * 0.5))
-      scale(0.4);
+      background-color: rgb(32, 32, 184);
   }
-
   75% {
-    opacity: 0.8;
-    transform: translateY(calc(var(--yOffset) - var(--screenHeight) * 0.75))
-      scale(0.6);
+      background-color: rgb(64, 64, 184);
   }
-
   100% {
-    opacity: 0;
-    transform: translateY(calc(var(--yOffset) - var(--screenHeight) - 20px))
-      scale(1);
+      background-color: rgb(96, 96, 184);
   }
-} */
+}
+
+@keyframes flashGreen {
+  0%  {
+      background-color: grey;
+  }
+  25% {
+      background-color: rgb(0, 184, 0);
+  }
+  50% {
+      background-color: rgb(32, 184, 32);
+  }
+  75% {
+      background-color: rgb(64, 184, 64);
+  }
+  100% {
+      background-color: rgb(96, 184, 96);
+  }
+}
+
