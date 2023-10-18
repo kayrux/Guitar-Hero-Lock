@@ -35,3 +35,24 @@ function checkHitAndAnimate(buttonNumber, element) {
     checkHit(buttonNumber);
     animateButton(element, buttonNumber);
 }
+
+const CORRECT_PASSWORD = "1234";  
+
+function checkPassword() {
+    const passwordInput = document.getElementById("password-input");
+    const celebration = document.querySelector(".celebration");
+    const homeScreen = document.querySelector(".home-screen");
+
+    if (passwordInput.value === CORRECT_PASSWORD) {
+        celebration.classList.remove("hidden");
+        celebration.style.opacity = "1";
+
+        setTimeout(() => {
+            celebration.style.opacity = "0";
+            homeScreen.classList.remove("hidden");
+            homeScreen.style.opacity = "1";
+        }, 3000);  // Transition to home screen after 3 seconds
+    } else {
+        alert("Incorrect password!");
+    }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock to Home Screen Animation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="lock-screen">
+        <input type="password" id="password-input" placeholder="Enter Password">
+        <button onclick="checkPassword()">Unlock</button>
+        <div class="celebration hidden">
+            <div class="confetti c1"></div>
+            <div class="confetti c2"></div>
+            <div class="confetti c3"></div>
+            <div class="confetti c4"></div>
+            🎉 Unlocked! 🎉
+        </div>
+    </div>
+
+    <div class="home-screen hidden">
+        <h1>This is Home Screen</h1>
+        <p> Applications and widgets will appear here.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
