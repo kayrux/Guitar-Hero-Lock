@@ -1,6 +1,15 @@
 // Scripts here
 
 const guitarBackgroundElement = document.getElementById("guitar-background");
+const incorrectPasscodeElement = document.getElementById(
+  "incorrect-passcode-notifier"
+);
+const executionCountElement = document.getElementById("execution-count");
+
+const passcodeDisplayElement = document.getElementById(
+  "passcode-sequence-display"
+);
+
 const fallAreaElement = document.getElementById("fall-area");
 const fallLane1Element = document.getElementById("fall-lane-1");
 const fallLane2Element = document.getElementById("fall-lane-2");
@@ -11,10 +20,16 @@ const trigger1Element = document.getElementById("trigger-1");
 const trigger2Element = document.getElementById("trigger-2");
 const trigger3Element = document.getElementById("trigger-3");
 const triggers = [trigger1Element, trigger2Element, trigger3Element];
+for (let i = 0; i < 3; i++) {
+  triggers[i].addEventListener("touchend", (event) => {
+    event.preventDefault();
+    checkHitAndAnimate(i + 1, triggers[i]);
+    console.log("Touched");
+  });
+}
 
-// const startButtonElement = document.getElementById("start-button");
 let fallingButtonsClicked = [];
-const passcode = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const passcode = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const startTriggers = [0, 0, 0];
 
 let counter = 0;
@@ -22,6 +37,40 @@ const maxExecutions = 4;
 let intervalId = 0;
 let awaitingStart = true;
 setTriggerBackgroundState(0);
+
+let passcodeDisplayCircles = [];
+initPasscodeSequenceDisplay();
+
+function initPasscodeSequenceDisplay() {
+  for (let i = 3; i >= 0; i--) {
+    const rowId = "passcode-sequence-row-" + (i + 1);
+    const row = document.createElement("div");
+    row.classList.add("passcode-sequence-row");
+    row.id = rowId;
+    passcodeDisplayElement.appendChild(row);
+  }
+
+  for (let i = 0; i < 4; i++) {
+    const rowElement = document.getElementById(
+      "passcode-sequence-row-" + (i + 1)
+    );
+    for (let j = 0; j < 3; j++) {
+      const circleId = "passcode-circle-" + (j + 1);
+      const circle = document.createElement("div");
+      circle.classList.add("passcode-circle-default");
+      circle.id = circleId;
+      rowElement.appendChild(circle);
+      passcodeDisplayCircles.push(circle);
+    }
+  }
+}
+
+function resetPasscodeSequenceDisplay() {
+  passcodeDisplayCircles = [];
+  passcodeDisplayElement.innerHTML = "";
+  initPasscodeSequenceDisplay();
+  passcodeDisplayElement.style.display = "none";
+}
 
 /* ******************************************************************************************* */
 function setTriggersToGameMode() {
@@ -75,6 +124,8 @@ function start() {
   intervalId = setInterval(addFallingButtons, 3000);
   awaitingStart = false;
   setTriggerBackgroundState(1);
+  incorrectPasscodeElement.style.display = "none";
+  passcodeDisplayElement.style.display = "flex";
 }
 
 function clearFallLanes() {
@@ -89,6 +140,7 @@ function addFallingButtons() {
 
   counter++;
   console.log(`This is execution number ${counter}`);
+  executionCountElement.innerHTML = counter;
 
   if (counter === maxExecutions + 1) {
     passcodeSequenceFinished();
@@ -100,9 +152,7 @@ function addFallingButtons() {
     const newButton = document.createElement("div");
     newButton.classList.add("falling-button");
     newButton.id = buttonId;
-    // newButton.addEventListener("click", function () {
-    //   onFallingButtonClick(buttonId);
-    // });
+
     parentElement.appendChild(newButton);
     fallingButtons.push(newButton);
     fallingButtonsClicked.push(0);
@@ -131,6 +181,7 @@ function checkPasscode() {
     console.log("PASS");
   } else {
     console.log("FAIL");
+    incorrectPasscodeElement.style.display = "block";
     reset();
   }
 }
@@ -156,20 +207,16 @@ function getFallButtonIndexFromId(id) {
   return id.substring(id.indexOf("-", id.length - 3) + 1, id.length);
 }
 
-// function onFallingButtonClick(id) {
-//   console.log("button " + id + " clicked");
-//   fallingButtonsClicked[getFallButtonIndexFromId(id)] = 1;
-// }
-
 function reset() {
   fallingButtonsClicked = [];
   for (let i = 0; i < startTriggers.length; i++) {
     startTriggers[i] = 0;
   }
   counter = 0;
+  executionCountElement.innerHTML = "";
   awaitingStart = true;
   setTriggerBackgroundState(0);
-  // guitarBackgroundElement.appendChild(startButtonElement);
+  resetPasscodeSequenceDisplay();
 }
 
 /* ******************************************************************************************************************************** */
@@ -192,21 +239,6 @@ function animateButton(element, buttonNumber) {
   }, 500);
 }
 
-// My idea is display the score on the button itself, but not finish yet.
-// function checkHit(buttonNumber) {
-//   let note = document.querySelector(".note:nth-child(" + buttonNumber + ")");
-//   let buttonTop = document
-//     .querySelectorAll(".guitar-button")
-//     [buttonNumber - 1].getBoundingClientRect().top;
-//   let noteTop = note.getBoundingClientRect().top;
-
-//   if (Math.abs(buttonTop - noteTop) < 30) {
-//     score += 10;
-//     document.querySelectorAll(".guitar-button")[buttonNumber - 1].innerText =
-//       "Button " + buttonNumber + " (" + score + ")";
-//   }
-// }
-
 function startConditionsMet() {
   for (let i of startTriggers) {
     if (i == 0) return false;
@@ -215,7 +247,7 @@ function startConditionsMet() {
 }
 
 function checkHit(buttonNumber, element) {
-  let marginOfError = 50;
+  let marginOfError = 100;
   let fallingButton = fallingButtons[buttonNumber - 1];
   let hitBox = fallingButton.getBoundingClientRect();
   let targetRect = element.getBoundingClientRect();
@@ -225,12 +257,16 @@ function checkHit(buttonNumber, element) {
     targetRect.bottom < hitBox.bottom + marginOfError
   ) {
     console.log("HIT", fallingButton);
-    fallingButtonsClicked[getFallButtonIndexFromId(fallingButton.id)] = 1;
+    fallButtonIndex = fallingButtonsClicked[
+      getFallButtonIndexFromId(fallingButton.id)
+    ] = 1;
+    passcodeDisplayCircles[
+      getFallButtonIndexFromId(fallingButton.id)
+    ].classList.add("ready-" + (((buttonNumber - 1) % 3) + 1));
   }
 }
 
 function checkHitAndAnimate(buttonNumber, element) {
-  // checkHit(buttonNumber);
   animateButton(element, buttonNumber);
   if (awaitingStart) {
     startTriggers[buttonNumber - 1] = 1;
