@@ -1,6 +1,6 @@
 /* global styles */
 :root {
-  --button-diameter: 150px;
+  --button-diameter: 200px;
 
   --trigger-1-color: red;
   --trigger-2-color: blue;
@@ -16,6 +16,33 @@
   background: linear-gradient(rgb(42, 14, 68) 10%, #0c192c 90%);
   overflow: hidden;
   z-index: -998;
+}
+
+.top-display {
+  display: flex;
+}
+
+#passcode-sequence-display {
+  margin: 2rem 3rem 0 auto;
+  display: none;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 1rem;
+  border: 3px solid white;
+  border-radius: 2px;
+}
+
+.passcode-sequence-row {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1rem;
+}
+
+.passcode-circle-default {
+  width: 30px;
+  height: 30px;
+  border: 3px solid white;
+  border-radius: 50%;
 }
 
 #guitar-background {
@@ -37,11 +64,31 @@
   left: 50%;
 }
 
+#incorrect-passcode-notifier {
+  height: 50px;
+  width: 50rem;
+  text-align: center;
+  align-self: center;
+  font-size: 50px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  color: white;
+  display: none;
+}
+
+#execution-count {
+  margin: 3rem 0 0 3rem;
+  color: white;
+  font-size: 60px;
+}
+
 .falling-button {
   width: var(--button-diameter);
   height: var(--button-diameter);
   border-radius: 50%;
-  border: 1px solid white;
+  border: 5px solid white;
   position: absolute;
   top: calc(var(--button-diameter) * -1);
   animation: fall 3s linear 1;
@@ -86,6 +133,7 @@
   height: var(--button-diameter);
   display: flex;
   align-items: center;
+  font-size: 30px;
   justify-content: center;
   border-radius: 50%;
   color: #f9f9f9;
@@ -121,17 +169,17 @@
 
 .game-mode-1 {
   background-color: inherit;
-  border: 2px solid var(--trigger-1-color);;
+  border: 5px solid var(--trigger-1-color);;
 }
 
 .game-mode-2 {
   background-color: inherit;
-  border: 2px solid var(--trigger-2-color);;
+  border: 5px solid var(--trigger-2-color);;
 }
 
 .game-mode-3 {
   background-color: inherit;
-  border: 2px solid var(--trigger-3-color);;
+  border: 5px solid var(--trigger-3-color);;
 }
 
 .ready-1 {
@@ -150,7 +198,7 @@
 
 @keyframes flashRed {
   0%  {
-      background-color: grey;
+      background-color: red;
   }
   25%  {
       background-color: rgb(184, 0, 0);
