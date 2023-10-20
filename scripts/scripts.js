@@ -178,6 +178,18 @@ function arraysAreEqual(arr1, arr2) {
 
 function checkPasscode() {
   if (arraysAreEqual(passcode, fallingButtonsClicked)) {
+    const celebration = document.querySelector(".celebration");
+    const homeScreen = document.querySelector(".home-screen");
+
+    guitarBackgroundElement.classList.add("hidden");
+    celebration.classList.remove("hidden");
+    celebration.style.opacity = "1";
+
+    setTimeout(() => {
+      celebration.style.opacity = "0";
+      homeScreen.classList.remove("hidden");
+      homeScreen.style.opacity = "1";
+    }, 3000);
     console.log("PASS");
   } else {
     console.log("FAIL");
