@@ -235,7 +235,16 @@ function animateButton(element, buttonNumber) {
   }
 
   setTimeout(() => {
-    element.classList.remove("flash-red", "flash-blue", "flash-green");
+    element.classList.remove("flash-red", "flash-blue", "flash-green", "ring");
+  }, 300);
+}
+
+function animateHit(buttonNumber) {
+  animationContainer = document.getElementById("trigger-" + buttonNumber);
+  console.log("Hit", buttonNumber);
+  animationContainer.classList.add("ring");
+  setTimeout(() => {
+    animationContainer.classList.remove("ring");
   }, 500);
 }
 
@@ -257,12 +266,13 @@ function checkHit(buttonNumber, element) {
     targetRect.bottom < hitBox.bottom + marginOfError
   ) {
     console.log("HIT", fallingButton);
-    fallButtonIndex = fallingButtonsClicked[
-      getFallButtonIndexFromId(fallingButton.id)
-    ] = 1;
+    let index = getFallButtonIndexFromId(fallingButton.id);
+    if (fallingButtonsClicked[index] == 1) return;
+    fallingButtonsClicked[getFallButtonIndexFromId(fallingButton.id)] = 1;
     passcodeDisplayCircles[
       getFallButtonIndexFromId(fallingButton.id)
     ].classList.add("ready-" + (((buttonNumber - 1) % 3) + 1));
+    animateHit(buttonNumber);
   }
 }
 
